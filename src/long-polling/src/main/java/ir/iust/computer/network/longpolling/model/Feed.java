@@ -15,7 +15,6 @@ import java.util.Date;
 public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long id;
     @NonNull
     private String title;
@@ -23,7 +22,10 @@ public class Feed {
     private String description;
     @NonNull
     private Date createDate;
-    public Feed(){}
+
+    public Feed() {
+    }
+
     private Feed(String title, String description, Date createDate) {
         this.title = title;
         this.description = description;

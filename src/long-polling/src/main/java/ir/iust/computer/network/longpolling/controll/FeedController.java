@@ -1,6 +1,6 @@
 package ir.iust.computer.network.longpolling.controll;
 
-import ir.iust.computer.network.longpolling.dto.FeedDto;
+import ir.iust.computer.network.longpolling.model.Feed;
 import ir.iust.computer.network.longpolling.service.FeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(path = "/feed", produces = "application/json")
-public class FeedController {
+@RequestMapping(path = "/feeds", produces = "application/json")
+public class FeedController extends AsyncController<Feed> {
     private FeedService feedService;
     Logger logger = LoggerFactory.getLogger(FeedController.class);
 
@@ -24,21 +24,31 @@ public class FeedController {
         this.feedService = feedService;
     }
 
-    @GetMapping
-    public DeferredResult<ResponseEntity<List<FeedDto>>> getFeeds() {
-        DeferredResult<ResponseEntity<List<FeedDto>>> deferredResult = new DeferredResult<>();
-        deferredResult.onTimeout(() -> deferredResult.setErrorResult(ResponseEntity
-                .status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout occurred.")));
-        deferredResult.onError((Throwable t) -> deferredResult.setErrorResult(ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.")));
-        ForkJoinPool.commonPool().submit(() -> {
-            deferredResult.setResult(new ResponseEntity<>(feedService.getFeeds(), HttpStatus.OK));
-        });
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Feed> getFeed(@PathVariable long id) {
+        return new ResponseEntity<>(feedService.getFeed(id), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/async")
+    public DeferredResult<ResponseEntity<List<Feed>>> getFeedsAsync() {
+        DeferredResult<ResponseEntity<List<Feed>>> deferredResult = createDifferResult();
+        CompletableFuture.runAsync(() -> deferredResult.setResult(new ResponseEntity<>(feedService.getFeeds(), HttpStatus.OK)));
         return deferredResult;
     }
 
-    @PostMapping(path = "/addFeed")
-    public ResponseEntity<FeedDto> addFeed(@RequestBody FeedDto feedDto) {
-        return new ResponseEntity<>(feedService.saveFeed(feedDto), HttpStatus.CREATED);
+    @GetMapping()
+    public ResponseEntity<List<Feed>> getFeeds() {
+        return new ResponseEntity<>(feedService.getFeeds(), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Feed> addFeed(@RequestBody Feed feed) {
+        return new ResponseEntity<>(feedService.saveFeed(feed), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}/delete")
+    public ResponseEntity<Long> deleteFeed(@PathVariable long id) {
+        feedService.deleteFeed(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
