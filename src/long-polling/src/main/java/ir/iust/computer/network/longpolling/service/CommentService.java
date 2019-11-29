@@ -28,4 +28,8 @@ public class CommentService {
     public void delete(Long feedId, Long id) {
         commentRepository.delete(commentRepository.findByIdAndFeed_Id(id, feedId).orElseThrow(NullPointerException::new));
     }
+
+    public List<Comment> getComments(Long feedId, Long startId) {
+        return commentRepository.findAllByIdGreaterThanEqualAndFeed_Id(startId, feedId);
+    }
 }

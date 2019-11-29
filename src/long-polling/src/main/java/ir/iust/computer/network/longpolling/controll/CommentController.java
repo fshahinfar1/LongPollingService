@@ -1,6 +1,7 @@
 package ir.iust.computer.network.longpolling.controll;
 
 import ir.iust.computer.network.longpolling.model.Comment;
+import ir.iust.computer.network.longpolling.model.Feed;
 import ir.iust.computer.network.longpolling.service.CommentService;
 import ir.iust.computer.network.longpolling.service.FeedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static java.lang.Thread.sleep;
 
 @RestController
 @RequestMapping(produces = "application/json")
@@ -36,10 +39,21 @@ public class CommentController extends AsyncController<Comment> {
         return new ResponseEntity<>(commentService.getComments(feedId), HttpStatus.OK);
     }
 
-    @GetMapping(path = "feeds/{feedId}/comments/async")
-    public DeferredResult<ResponseEntity<List<Comment>>> getCommentsAsync(@PathVariable Long feedId) {
+    @GetMapping(path = "feeds/{feedId}/comments/async/{startId}")
+    public DeferredResult<ResponseEntity<List<Comment>>> getCommentsAsync(@PathVariable Long feedId, @PathVariable Long startId) {
         DeferredResult<ResponseEntity<List<Comment>>> deferredResult = createDifferResult();
-        CompletableFuture.runAsync(() -> deferredResult.setResult(new ResponseEntity<>(commentService.getComments(feedId), HttpStatus.OK)));
+        CompletableFuture.runAsync(() -> {
+            List<Comment> comments = commentService.getComments(feedId,startId);
+            while (comments.isEmpty()) {
+                try {
+                    sleep(1000);
+                    comments = commentService.getComments(feedId,startId);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            deferredResult.setResult(new ResponseEntity<>(comments, HttpStatus.OK));
+        });
         return deferredResult;
     }
 

@@ -25,7 +25,11 @@ public class FeedService {
         return feedRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 
-    public void deleteFeed(Long id){
+    public void deleteFeed(Long id) {
         feedRepository.delete(feedRepository.findById(id).orElseThrow(NullPointerException::new));
+    }
+
+    public List<Feed> getFeeds(long startId) {
+        return feedRepository.findAllByIdGreaterThanEqual(startId);
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AsyncController<T> {
     DeferredResult<ResponseEntity<List<T>>> createDifferResult() {
-        DeferredResult<ResponseEntity<List<T>>> deferredResult = new DeferredResult<>(60000L);
+        DeferredResult<ResponseEntity<List<T>>> deferredResult = new DeferredResult<>();
         deferredResult.onTimeout(() -> deferredResult.setErrorResult(ResponseEntity
                 .status(HttpStatus.REQUEST_TIMEOUT).body("Request timeout occurred.")));
         deferredResult.onError((Throwable t) -> deferredResult.setErrorResult(ResponseEntity

@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import static java.lang.Thread.sleep;
 
 @RestController
 @RequestMapping(path = "/feeds", produces = "application/json")
@@ -29,10 +32,21 @@ public class FeedController extends AsyncController<Feed> {
         return new ResponseEntity<>(feedService.getFeed(id), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/async")
-    public DeferredResult<ResponseEntity<List<Feed>>> getFeedsAsync() {
+    @GetMapping(path = "/async/{startId}")
+    public DeferredResult<ResponseEntity<List<Feed>>> getFeedsAsync(@PathVariable  Long startId) {
         DeferredResult<ResponseEntity<List<Feed>>> deferredResult = createDifferResult();
-        CompletableFuture.runAsync(() -> deferredResult.setResult(new ResponseEntity<>(feedService.getFeeds(), HttpStatus.OK)));
+        CompletableFuture.runAsync(() -> {
+            List<Feed> feeds = feedService.getFeeds(startId);
+            while (feeds.isEmpty()) {
+                try {
+                    sleep(1000);
+                    feeds = feedService.getFeeds(startId);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            deferredResult.setResult(new ResponseEntity<>(feeds, HttpStatus.OK));
+        });
         return deferredResult;
     }
 
