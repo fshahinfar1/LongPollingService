@@ -19,14 +19,24 @@ export default function NavBar() {
 		history.push(name);
 	}
 
+	const button_info = [{
+		name: 'Home',
+		route: '/'
+	}, {
+		name: 'New Post',
+		route: '/new-feed'
+	}];
+
+	const buttons = button_info.map(function (obj) {
+		return (<NavBarButton key={obj.name}
+						value={obj.name}
+						onClick={()=>history.push(obj.route)}
+					/>);
+	});
+
 	return (
 		<div className="navbar-container">
-			<NavBarButton value="Home"
-				onClick={()=>history.push('/')}
-			/>
-			<NavBarButton value="New Post"
-				onClick={()=>history.push('/new-feed')}
-			/>
+			{buttons}
 		</div>
 	);
 }

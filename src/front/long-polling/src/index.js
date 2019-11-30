@@ -9,6 +9,7 @@ import {
 import './index.css';
 import App from './App';
 import PostFeed from './PostFeed';
+import Feeds from './Feeds';
 import * as serviceWorker from './serviceWorker';
 
 class Routing extends React.Component {
