@@ -47,13 +47,14 @@ function App() {
 						description={obj.description}
 					/>
 	});
+
   return (
 		<div>
 			<NavBar/>
 			<main>
 				<h1>Main</h1>
 				<Link to="/new-feed">wow</Link>
-				<div>
+				<div className="feeds-container">
 					{feed_objs}
 				</div>
 			</main>

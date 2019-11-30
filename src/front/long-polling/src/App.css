@@ -1,4 +1,5 @@
 body {
+	background-color: #e6edf7;
 }
 
 /*form*/
@@ -83,9 +84,10 @@ body {
 
 /*feed*/
 .feed-container {
-	border: 3px solid darkgray;
+	border: 1px solid darkgray;
 	border-radius: 1em;
 	margin: 1%;
+	background-color: white;
 }
 
 .feed-content {
@@ -95,8 +97,7 @@ body {
 .feed-footer {
 	width: 100%;
 	height: 100%;
-	border-top: 2px solid black;
-	background-color: lightgray;
+	border-top: 1px solid lightgray;
 }
 
 .feed-date {
@@ -106,5 +107,15 @@ body {
 	margin-left: 1em;
 	margin-bottom: 0.2em;
 	margin-top: 0.2em;
+
+}
+
+/*feeds*/
+main {
+	position: relative;
+	left: 50%;
+	top: 0;
+	transform: translate(-50%, 0);
+	width: 50%;
 
 }
