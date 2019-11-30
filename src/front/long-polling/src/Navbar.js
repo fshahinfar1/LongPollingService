@@ -1,11 +1,32 @@
 import React from 'react';
-import 'App.css';
+import {useHistory} from 'react-router-dom';
+import './App.css';
+
+function NavBarButton(props) {
+	return (
+		<div className="navbar-button"
+			onClick={props.onClick}
+		>
+			<p>{props.value}</p>
+		</div>
+	);
+}
 
 export default function NavBar() {
+	const history = useHistory();
+
+	function link(name) {
+		history.push(name);
+	}
+
 	return (
 		<div className="navbar-container">
-			<button>Home</button>
-			<button>New Post</button>
+			<NavBarButton value="Home"
+				onClick={()=>history.push('/')}
+			/>
+			<NavBarButton value="New Post"
+				onClick={()=>history.push('/new-feed')}
+			/>
 		</div>
 	);
 }
