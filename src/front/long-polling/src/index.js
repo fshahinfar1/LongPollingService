@@ -4,25 +4,27 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+	useHistory,
 } from "react-router-dom";
 
 import './index.css';
 import App from './App';
 import PostFeed from './PostFeed';
 import Feeds from './Feeds';
+import {Comment} from './App';
 import * as serviceWorker from './serviceWorker';
 
-class Routing extends React.Component {
-	render() {
-		return (
-			<Router>
-				<Switch>
-					<Route path="/new-feed"><PostFeed /></Route>
-					<Route path="/"><App /></Route>
-				</Switch>
-			</Router>
-		);
-	}
+
+function Routing() {
+	return (
+		<Router>
+			<Switch>
+				<Route path="/new-feed"><PostFeed /></Route>
+				<Route path="/comment"><Comment /></Route>
+				<Route path="/"><App /></Route>
+			</Switch>
+		</Router>
+	);
 }
 
 ReactDOM.render(<Routing />, document.getElementById('root'));
