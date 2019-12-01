@@ -1,17 +1,11 @@
 import React from 'react';
 import NavBar from './Navbar';
+import FancyButton from './FancyButton';
 import {get, post} from './Http';
 import {Link} from 'react-router-dom';
+import {hear_icon, comment_icon} from './icons';
 import './App.css';
 
-
-function FancyButton(props) {
-	return (
-		<div className="fancy-button-container">
-			<button onClick={props.onClick}>{props.value}</button>
-		</div>
-	);
-}
 
 function Feed(props) {
 	return (
@@ -21,8 +15,14 @@ function Feed(props) {
 				<p>{props.description}</p>
 			</div>
 			<div className='feed-footer'>
-				<FancyButton value='like'/>
-				<FancyButton value='comment'/>
+				<FancyButton
+					value='like'
+					img={{alt:'heart', src:hear_icon}}
+				/>
+				<FancyButton
+					value='comment'
+					img={{alt:'comment', src:comment_icon}}
+				/>
 				<p className='feed-date'>1398-x-x</p>
 			</div>
 		</div>
