@@ -15,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Thread.sleep;
 
+@CrossOrigin
 @RestController
 @RequestMapping(produces = "application/json")
 public class CommentController extends AsyncController<Comment> {
@@ -43,11 +44,11 @@ public class CommentController extends AsyncController<Comment> {
     public DeferredResult<ResponseEntity<List<Comment>>> getCommentsAsync(@PathVariable Long feedId, @PathVariable Long startId) {
         DeferredResult<ResponseEntity<List<Comment>>> deferredResult = createDifferResult();
         CompletableFuture.runAsync(() -> {
-            List<Comment> comments = commentService.getComments(feedId,startId);
+            List<Comment> comments = commentService.getComments(feedId, startId);
             while (comments.isEmpty()) {
                 try {
                     sleep(1000);
-                    comments = commentService.getComments(feedId,startId);
+                    comments = commentService.getComments(feedId, startId);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
