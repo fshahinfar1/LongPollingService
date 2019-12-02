@@ -118,6 +118,29 @@ body {
 
 }
 
+/*comments*/
+.comment-area {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.comment-box {
+	display: block;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	border-bottom-right-radius: 20px;
+	border-top-right-radius: 10px;
+
+	background-color: white;
+}
+
+.comment-box p {
+	padding: 1em;
+}
+
 /*feeds*/
 main {
 	position: relative;
