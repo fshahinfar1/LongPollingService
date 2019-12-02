@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Thread.sleep;
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "/feeds", produces = "application/json")
 public class FeedController extends AsyncController<Feed> {
@@ -33,7 +34,7 @@ public class FeedController extends AsyncController<Feed> {
     }
 
     @GetMapping(path = "/async/{startId}")
-    public DeferredResult<ResponseEntity<List<Feed>>> getFeedsAsync(@PathVariable  Long startId) {
+    public DeferredResult<ResponseEntity<List<Feed>>> getFeedsAsync(@PathVariable Long startId) {
         DeferredResult<ResponseEntity<List<Feed>>> deferredResult = createDifferResult();
         CompletableFuture.runAsync(() -> {
             List<Feed> feeds = feedService.getFeeds(startId);
