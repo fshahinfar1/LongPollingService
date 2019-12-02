@@ -7,12 +7,9 @@ import {
 	useHistory,
 } from "react-router-dom";
 
-import './index.css';
-import App from './App';
-import PostFeed from './PostFeed';
-import Feeds from './Feeds';
-import {Comment} from './App';
+import {App, PostFeed, Comment} from './screens';
 import * as serviceWorker from './serviceWorker';
+import './styles/index.css';
 
 
 function Routing() {

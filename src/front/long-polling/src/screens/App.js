@@ -1,36 +1,10 @@
 import React from 'react';
-import NavBar from './Navbar';
-import FancyButton from './FancyButton';
-import {get, post} from './Http';
 import {Link, useHistory} from 'react-router-dom';
-import {hear_icon, comment_icon} from './icons';
-import './App.css';
+import {FancyButton, NavBar} from '../components';
+import {get, post} from '../utils/Http';
+import {hear_icon, comment_icon} from '../icons';
+import '../styles/App.css';
 
-
-export class Comment extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-
-	onBackClicked = () => {
-	}
-
-	render() {
-		return (
-			<div>
-				<FancyButton
-					value="Back"
-					onClick={this.onBackClicked}
-				/>
-				<textarea />
-				<FancyButton
-					value="Post"
-				/>
-			</div>
-		);
-	}
-}
 
 class Feed extends React.Component {
 	constructor(props) {

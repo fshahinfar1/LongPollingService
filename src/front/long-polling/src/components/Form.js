@@ -1,6 +1,6 @@
 import React from 'react';
-import {get, post} from './Http';
-import './App.css';
+import {get, post} from '../utils/Http';
+import '../styles/App.css';
 
 class Form extends React.Component {
 	constructor(props) {
