@@ -19,16 +19,11 @@ function postFeeds(obj) {
 
 function PostFeed() {
   return (
-		<div>
-			<NavBar/>
-			<main>
-				<div>
-				<Form title="Feed" onSubmit={postFeeds}/>
-				</div>
-			</main>
-			<footer>
-			</footer>
-		</div>
+		<main>
+			<div>
+			<Form title="Feed" onSubmit={postFeeds}/>
+			</div>
+		</main>
   );
 }
 

@@ -150,3 +150,33 @@ main {
 	width: 50%;
 
 }
+
+/*login*/
+.login-form {
+	display: inline-block;
+	position: relative;
+	left: 50%;
+	top: 0;
+	transform: translate(-50%, 0);
+	margin: 3%;
+	padding: 2%;
+	background-color: white;
+	border: 2px solid lightgray;
+}
+
+.login-input-container {
+	display: inline-block;
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0);
+}
+
+.login-form input {
+	display: block;
+	margin: 0.5em;
+}
+
+.login-form img {
+	display: block;
+	vertical-align: middle;
+}

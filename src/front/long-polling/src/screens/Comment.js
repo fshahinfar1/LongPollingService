@@ -26,30 +26,27 @@ export default class Comment extends React.Component {
 		});
 
 		return (
-			<div>
-				<NavBar />
-				<main>
-					<Feed
-							title="test title"
-							description="description"
-					/>
-					<div className="comment-area">
-						<div>
-							{comments}
-						</div>
-						<div>
-							<textarea/>
-							<FancyButton
-								value="Back"
-								onClick={this.onBackClicked}
-							/>
-							<FancyButton
-								value="Post"
-							/>
-						</div>
+			<main>
+				<Feed
+						title="test title"
+						description="description"
+				/>
+				<div className="comment-area">
+					<div>
+						{comments}
 					</div>
-				</main>
-			</div>
+					<div>
+						<textarea/>
+						<FancyButton
+							value="Back"
+							onClick={this.onBackClicked}
+						/>
+						<FancyButton
+							value="Post"
+						/>
+					</div>
+				</div>
+			</main>
 		);
 	}
 }

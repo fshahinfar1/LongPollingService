@@ -12,7 +12,7 @@ function NavBarButton(props) {
 	);
 }
 
-export default function NavBar() {
+export default function NavBar(props) {
 	const history = useHistory();
 
 	function link(name) {
@@ -37,6 +37,14 @@ export default function NavBar() {
 	return (
 		<div className="navbar-container">
 			{buttons}
+		{
+			props.showLogin?
+			<NavBarButton
+				value="Login"
+				onClick={()=>history.push("/login")}
+			/>
+				: null
+		}
 		</div>
 	);
 }

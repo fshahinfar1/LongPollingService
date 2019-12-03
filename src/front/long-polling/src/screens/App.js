@@ -28,18 +28,13 @@ function App() {
 	});
 
   return (
-		<div>
-			<NavBar/>
-			<main>
-				<h1>Main</h1>
-				<Link to="/new-feed">wow</Link>
-				<div className="feeds-container">
-					{feed_objs}
-				</div>
-			</main>
-			<footer>
-			</footer>
-		</div>
+		<main>
+			<h1>Main</h1>
+			<Link to="/new-feed">wow</Link>
+			<div className="feeds-container">
+				{feed_objs}
+			</div>
+		</main>
   );
 }
 

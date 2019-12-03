@@ -1,6 +1,7 @@
 import App from './App';
-import PostFeed from './PostFeed.js';
-import Comment from './Comment.js';
+import PostFeed from './PostFeed';
+import Comment from './Comment';
+import Login from './Login';
 
 
-export {App, PostFeed, Comment};
+export {App, PostFeed, Comment, Login};
