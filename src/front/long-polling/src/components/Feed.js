@@ -26,7 +26,7 @@ export default function Feed(props) {
 						img={{alt:'comment', src:comment_icon}}
 						onClick={onCommentClick}
 					/>
-					<p className='feed-date'>1398-x-x</p>
+					<p className='feed-date'>{props.date}</p>
 				</div>
 			</div>
 		);

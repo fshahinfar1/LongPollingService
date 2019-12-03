@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {FancyButton, Feed} from '../components';
-import {get, post} from '../utils/Http';
+import {fetchFeeds} from '../models';
 import '../styles/App.css';
 
 
@@ -14,18 +14,11 @@ class Feeds extends React.Component {
 	}
 
 	componentDidMount() {
-		const _this = this;
-		get('http://localhost:8080/feeds', function() {
-			_this.onFeedsSuccess(this);
-		}, function () {
-				_this.onFeedsError(this);
-		});
+		fetchFeeds(this.onFeedsSuccess, this.onFeedsError);
 	}
 
 	onFeedsSuccess = (e) => {
-		console.log(e.responseText);
-		const feeds_info = JSON.parse(e.responseText);
-		this.setState({feeds_info});
+		this.setState({feeds_info: e});
 	}
 
 	onFeedsError = (e) => {
@@ -38,12 +31,12 @@ class Feeds extends React.Component {
 							key={obj.id}
 							title={obj.title}
 							description={obj.description}
+							date={obj.date}
 						/>
 		});
 
 		return (
 			<main>
-				<h1>Main</h1>
 				<div className="feeds-container">
 					{feeds}
 				</div>
