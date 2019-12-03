@@ -200,6 +200,12 @@ main {
 	padding: 1em;
 }
 
+.feed-option-container b {
+	display: inline-block;
+	padding-right: 1em;
+	margin-right: 0.5em;
+}
+
 .feed-option-buttons {
 	float: right;
 	vertical-align: middle;
