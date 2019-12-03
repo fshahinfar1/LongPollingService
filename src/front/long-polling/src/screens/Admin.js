@@ -1,5 +1,6 @@
 import React from 'react';
 import {FancyButton} from '../components';
+import {fetchFeeds, deleteFeed} from '../models';
 import '../styles/App.css';
 
 
@@ -9,44 +10,70 @@ function FeedOptions(props) {
 			<b>{props.title}</b>
 			<span>{props.date}</span>
 			<div className="feed-option-buttons" >
-				<FancyButton value="view" />
-				<FancyButton value="delete" />
+				<FancyButton value="view" onClick={props.onViewClicked} />
+				<FancyButton value="delete" onClick={props.onDeleteClicked} />
 			</div>
 		</div>
 	);
 }
 
-export default function Admin(props) {
+export default class Admin extends React.Component {
 
-	const feeds_info = [{
-		id: 0,
-		title:'title1',
-		date: '1398-x-x',
-	}, {
-		id: 1,
-		date: '1398-x-x',
-		title: 'title2'
-	}, {
-		id: 2,
-		date: '1398-x-x',
-		title: 'title3'
-	}, {
-		id: 3,
-		date: '1398-x-x',
-		title: 'title4'
-	}]
+	constructor(props) {
+		super(props);
+		this.state = {
+			feedsInfo: [],
+		};
+	}
 
-	const feeds = feeds_info.map(function(obj) {
+	componentDidMount() {
+		fetchFeeds(this.onFeedsSuccess, this.onFeedsError);
+	}
+
+	onFeedsSuccess = (e) => {
+		this.setState({feedsInfo: e});
+	}
+
+	onFeedsError = (e) => {
+		console.log("Fetching feeds for admin panel failed");
+	}
+
+	onDeleteFeed = (obj) => {
+		console.log('onDeleteFeed');
+		deleteFeed(obj, () => {
+			const feedsInfo = JSON.parse(JSON.stringify(this.state.feedsInfo));
+			for (let i = 0; i < feedsInfo.length; i++) {
+				if (feedsInfo[i].id === obj.id) {
+					feedsInfo.splice(i, 1);
+					break;
+				}
+			}
+			this.setState({feedsInfo});
+		}, () => {
+			console.log("admin panel: failed to remove feed");
+		});
+	}
+
+	render() {
+		const _this = this;
+		const feeds = this.state.feedsInfo.map(function(obj) {
+			return (
+				<FeedOptions
+					key={obj.id}
+					date={obj.date}
+					title={obj.title}
+					onViewClicked={()=>null}
+					onDeleteClicked={() => _this.onDeleteFeed(obj)}
+				/>
+			);
+		});
+
 		return (
-			<FeedOptions key={obj.id} date={obj.date} title={obj.title} />
+			<main>
+				<div className="admin-view">
+					{feeds}
+				</div>
+			</main>
 		);
-	});
-
-	return (
-		<main>
-			<div className="admin-view">
-				{feeds}
-			</div>
-		</main>
-	);
+	}
 }

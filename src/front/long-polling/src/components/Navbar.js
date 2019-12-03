@@ -16,10 +16,6 @@ function NavBarButton(props) {
 export default function NavBar(props) {
 	const history = useHistory();
 
-	function link(name) {
-		history.push(name);
-	}
-
 	const button_info = [{
 		name: 'Home',
 		route: '/'
