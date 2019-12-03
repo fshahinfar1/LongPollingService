@@ -73,6 +73,11 @@ body {
 	background-color: #90a9d1;
 }
 
+.navbar-container img {
+	vertical-align: middle;
+	max-height: 100px;
+}
+
 /*fancy button*/
 .fancy-button-container {
 	display: inline-block;

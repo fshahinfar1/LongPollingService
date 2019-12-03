@@ -1,5 +1,6 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
+import {logo} from '../icons';
 import '../styles/App.css';
 
 function NavBarButton(props) {
@@ -36,6 +37,7 @@ export default function NavBar(props) {
 
 	return (
 		<div className="navbar-container">
+		<img alt='logo' src={logo} />
 			{buttons}
 		{
 			props.showLogin?
