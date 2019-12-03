@@ -185,3 +185,23 @@ main {
 	display: block;
 	vertical-align: middle;
 }
+
+
+/*admin*/
+.admin-view {
+	margin-top: 5em;
+	margin-bottom: 5em;
+}
+
+.feed-option-container {
+	display: block;
+	background-color: white;
+	margin: 0.3em;
+	padding: 1em;
+}
+
+.feed-option-buttons {
+	float: right;
+	vertical-align: middle;
+}
+

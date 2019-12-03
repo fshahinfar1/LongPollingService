@@ -26,6 +26,9 @@ export default function NavBar(props) {
 	}, {
 		name: 'New Post',
 		route: '/new-feed'
+	}, {
+		name: 'Admin Panel',
+		route: '/admin'
 	}];
 
 	const buttons = button_info.map(function (obj) {

@@ -7,7 +7,7 @@ import {
 	useHistory,
 } from "react-router-dom";
 
-import {App, PostFeed, Comment, Login} from './screens';
+import {App, PostFeed, Comment, Login, Admin} from './screens';
 import {NavBar} from './components';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
@@ -21,6 +21,7 @@ function Routing() {
 					<Route path="/new-feed"><PostFeed /></Route>
 					<Route path="/comment"><Comment /></Route>
 					<Route path="/login"><Login /></Route>
+					<Route path="/admin"><Admin /></Route>
 					<Route path="/"><App /></Route>
 				</Switch>
 			</Router>
