@@ -34,7 +34,7 @@ class Feeds extends React.Component {
 		const length = feeds_info.length;
 		let lastEventId = this.state.lastEventId;
 		e.forEach(function(obj) {
-			if (obj.id > lastEventId)
+			if (obj.id >= lastEventId)
 				lastEventId = obj.id + 1; // next event id
 			while (checkedIndex < length &&
 							feeds_info[checkedIndex].id < obj.id) {
