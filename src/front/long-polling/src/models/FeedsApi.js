@@ -20,6 +20,19 @@ export function deleteFeed(obj, success, error) {
 	});
 }
 
+export function asyncFetchFeeds(eventId, success, error) {
+	console.log(`${base}/feeds/async/${eventId}`);
+	const xhr = get(`${base}/feeds/async/${eventId}`, function() {
+		console.log(this.responseText);
+		let payload = JSON.parse(this.responseText);
+		payload = payload.map(feedFromJson);
+		success(payload);
+	}, function() {
+		error(this);
+	});
+	return xhr;
+}
+
 function feedFromJson(obj) {
 	return ({
 		id: obj.id,

@@ -10,6 +10,7 @@ export function get(url, success, error) {
 	xhr.send();
 	xhr.addEventListener('load', success);
 	xhr.addEventListener('error', error);
+	return xhr;
 }
 
 export function post(url, payload, success, error) {
@@ -19,6 +20,7 @@ export function post(url, payload, success, error) {
 	xhr.send(body);
 	xhr.addEventListener('load', success);
 	xhr.addEventListener('error', error);
+	return xhr;
 }
 
 export function del(url, success, error) {
@@ -26,4 +28,5 @@ export function del(url, success, error) {
 	xhr.addEventListener('load', success);
 	xhr.addEventListener('error', error);
 	xhr.send();
+	return xhr;
 }
