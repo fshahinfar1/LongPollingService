@@ -7,7 +7,7 @@ import '../styles/App.css';
 export default function Feed(props) {
 	const history = useHistory();
 	const onCommentClick = () => {
-	  history.push('/comment');
+	  history.push(`/comment/${props.id}`);
 	}
 
 	return (

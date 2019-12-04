@@ -69,6 +69,7 @@ class Feeds extends React.Component {
 							title={obj.title}
 							description={obj.description}
 							date={obj.date}
+							id={obj.id}
 						/>
 		});
 

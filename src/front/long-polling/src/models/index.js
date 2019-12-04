@@ -1,4 +1,6 @@
-import {fetchFeeds, deleteFeed, asyncFetchFeeds} from './FeedsApi';
+import {fetchFeed, fetchFeeds, deleteFeed, asyncFetchFeeds} from './FeedsApi';
+import {asyncFetchComments, postComment} from './CommentApi';
 
 
-export {fetchFeeds, deleteFeed, asyncFetchFeeds};
+export {fetchFeed, fetchFeeds, deleteFeed, asyncFetchFeeds,
+	asyncFetchComments, postComment};

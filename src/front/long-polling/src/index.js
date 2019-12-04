@@ -19,7 +19,7 @@ function Routing() {
 				<NavBar showLogin={true}/>
 				<Switch>
 					<Route path="/new-feed"><PostFeed /></Route>
-					<Route path="/comment"><Comment /></Route>
+					<Route path="/comment/:feedId"><Comment /></Route>
 					<Route path="/login"><Login /></Route>
 					<Route path="/admin"><Admin /></Route>
 					<Route path="/"><Feeds /></Route>
