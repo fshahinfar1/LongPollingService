@@ -17,19 +17,15 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    public List<Comment> getComments(Long feedId) {
-        return commentRepository.findAllByFeed_Id(feedId);
+    public List<Comment> getComments(Long postId) {
+        return commentRepository.findAllByPost_Id(postId);
     }
 
-    public Comment getComment(Long feedId, Long id) {
-        return commentRepository.findByIdAndFeed_Id(id, feedId).orElseThrow(NullPointerException::new);
+    public Comment getComment(Long id) {
+        return commentRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 
-    public void delete(Long feedId, Long id) {
-        commentRepository.delete(commentRepository.findByIdAndFeed_Id(id, feedId).orElseThrow(NullPointerException::new));
-    }
-
-    public List<Comment> getComments(Long feedId, Long startId) {
-        return commentRepository.findAllByIdGreaterThanEqualAndFeed_Id(startId, feedId);
+    public void delete(Long id) {
+        commentRepository.delete(commentRepository.findById(id).orElseThrow(NullPointerException::new));
     }
 }
