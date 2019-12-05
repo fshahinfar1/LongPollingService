@@ -7,6 +7,7 @@ import ir.iust.computer.network.longpolling.model.Event;
 import ir.iust.computer.network.longpolling.model.EventType;
 import ir.iust.computer.network.longpolling.service.CommentService;
 import ir.iust.computer.network.longpolling.service.EventService;
+import ir.iust.computer.network.longpolling.service.LikeService;
 import ir.iust.computer.network.longpolling.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,16 +30,18 @@ public class EventController {
     private final EventService eventService;
     private final CommentService commentService;
     private final PostService postService;
+    private final LikeService likeService;
 
     @Autowired
-    public EventController(EventService eventService, PostService postService, CommentService commentService) {
+    public EventController(EventService eventService, PostService postService, CommentService commentService, LikeService likeService) {
         this.eventService = eventService;
         this.postService = postService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     @GetMapping()
-    public ResponseEntity<List<Event>> getEventss() {
+    public ResponseEntity<List<Event>> getEvents() {
         return new ResponseEntity<>(eventService.getEvents(), HttpStatus.OK);
     }
 
@@ -56,7 +59,6 @@ public class EventController {
                     e.printStackTrace();
                 }
             }
-            List<Long> deletedFeeds = events.parallelStream().filter(e -> e.getEventType().name().equals(EventType.DELETE.name())).map(Event::getDataId).collect(Collectors.toList());
             for (Event event : events) {
                 Result result = new Result();
                 result.setEvent(event);
@@ -64,13 +66,12 @@ public class EventController {
                     results.add(result);
                     continue;
                 }
-                if (deletedFeeds.contains(event.getDataId())) {
-                    continue;
-                }
                 if (event.getDataType().name().equals(DataType.POST.name())) {
                     result.setFeed(postService.getPost(event.getDataId()));
-                } else {
+                } else if(event.getDataType().name().equals(DataType.COMMENT.name())) {
                     result.setFeed(commentService.getComment(event.getDataId()));
+                }else {
+                    result.setFeed(likeService.getLike(event.getDataId()));
                 }
                 results.add(result);
             }

@@ -19,4 +19,5 @@ public class Event {
     private Enum<EventType> eventType;
     private Long dataId;
     private Date eventTime;
+    private Long postId;
 }

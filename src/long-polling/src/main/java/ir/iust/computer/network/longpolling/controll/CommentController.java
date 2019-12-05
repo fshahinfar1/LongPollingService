@@ -2,6 +2,7 @@ package ir.iust.computer.network.longpolling.controll;
 
 import ir.iust.computer.network.longpolling.model.Comment;
 import ir.iust.computer.network.longpolling.model.DataType;
+import ir.iust.computer.network.longpolling.model.Event;
 import ir.iust.computer.network.longpolling.model.EventType;
 import ir.iust.computer.network.longpolling.service.CommentService;
 import ir.iust.computer.network.longpolling.service.EventService;
@@ -19,9 +20,7 @@ import java.util.List;
 @RequestMapping(produces = "application/json")
 public class CommentController extends BaseController {
     private final PostService postService;
-
     private final CommentService commentService;
-
     private final EventService eventService;
 
     @Autowired
@@ -36,7 +35,9 @@ public class CommentController extends BaseController {
         Comment savedComment;
         comment.setPost(postService.getPost(postId));
         savedComment = commentService.addComment(comment);
-        eventService.saveEvent(createEvent(EventType.ADD, DataType.COMMENT, savedComment.getId()));
+        Event event = createEvent(EventType.ADD, DataType.COMMENT, savedComment.getId());
+        event.setPostId(postId);
+        eventService.saveEvent(event);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 
@@ -47,8 +48,10 @@ public class CommentController extends BaseController {
 
     @DeleteMapping(path = "comments/{id}")
     public ResponseEntity<Long> deleteComment(@PathVariable Long id) {
-        eventService.saveEvent(createEvent(EventType.DELETE, DataType.COMMENT, id));
+        Event event = createEvent(EventType.DELETE, DataType.COMMENT, id);
+        event.setPostId(commentService.getComment(id).getPost().getId());
         commentService.delete(id);
+        eventService.saveEvent(event);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
