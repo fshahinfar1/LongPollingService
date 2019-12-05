@@ -18,15 +18,23 @@ export function asyncFetchEvents(eventId, success, error) {
 	return xhr;
 }
 
-export function filterEvent(arr, {dataType, eventType}) {
+export function filterEvent(arr, {dataType, eventType, postId}) {
 		let res = arr.filter(function(obj) {
+			console.log(eventType, postId, dataType);
 			let okay = true;
-			if (dataType) {
+			if (dataType !== undefined) {
 				okay = okay && obj.event.dataType === dataType;
 			}
 
-			if (eventType) {
+			if (eventType !== undefined) {
 				okay = okay && obj.event.eventType === eventType;
+			}
+
+			if (postId !== undefined) {
+				console.log('postId:', postId, obj.event.postId)
+				console.log(obj.event.postId === postId);
+				console.log(typeof (postId), typeof(obj.event.postId));
+				okay = okay && obj.event.postId === postId;
 			}
 
 			return okay;

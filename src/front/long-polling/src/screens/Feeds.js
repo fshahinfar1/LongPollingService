@@ -16,13 +16,13 @@ class Feeds extends React.Component {
 	}
 
 	componentDidMount() {
-		// fetchFeeds(this.onFeedsSuccess, this.onFeedsError);
-		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId + 1,
-			this.onFeedsEventFetch, this.onFeedsError);
+		console.log("Feeds screen did mount", this.state.lastEventId + 1);
+		fetchFeeds(this.onFeedsSuccess, this.onFeedsError);
 	}
 
 	componentWillUnmount() {
 		if (this.asyncFeedsXhr) {
+			console.log("abort xhr feeds");
 			this.asyncFeedsXhr.abort();
 		}
 	}
@@ -61,6 +61,9 @@ class Feeds extends React.Component {
 
 	onFeedsSuccess = (e) => {
 		this.setState({feeds_info: e});
+
+		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId + 1,
+			this.onFeedsEventFetch, this.onFeedsError);
 	}
 
 	onFeedsError = (e) => {

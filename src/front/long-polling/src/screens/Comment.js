@@ -1,7 +1,8 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {NavBar, FancyButton, Feed} from '../components';
-import {fetchFeed, asyncFetchComments, postComment} from '../models';
+import {fetchFeed, asyncFetchComments,
+	postComment, fetchComments} from '../models';
 import '../styles/App.css';
 
 function CommentBox(props) {
@@ -16,7 +17,7 @@ class Comment extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			feedId: props.match.params.feedId,
+			feedId: Number.parseInt(props.match.params.feedId),
 			comments: [],
 			currentComment: '',
 			feed: null,
@@ -28,8 +29,7 @@ class Comment extends React.Component {
 	componentDidMount() {
 		fetchFeed(this.state.feedId,
 			this.onFetchFeed, this.onFeedError);
-		this.asyncCommentsXhr = asyncFetchComments(this.state.feedId,
-			this.state.lastEventId, this.onCommentEvent, this.onCommentError);
+		fetchComments(this.state.feedId, this.onFetchComment, this.onCommentError);
 	}
 
 	componentWillUnmount() {
@@ -41,6 +41,13 @@ class Comment extends React.Component {
 		this.setState({feed: e});
 	}
 
+	onFetchComment = (e) => {
+		console.log(e);
+		this.setState({comments: e});
+		this.asyncCommentsXhr = asyncFetchComments(this.state.feedId,
+			this.state.lastEventId, this.onCommentEvent, this.onCommentError);
+	}
+
 	onFeedError = (e) => {
 		console.log('error loading comment');
 	}
@@ -49,7 +56,7 @@ class Comment extends React.Component {
 		const comments = JSON.parse(JSON.stringify(this.state.comments));
 		console.log(comments);
 		let lastCheckedIndex = 0;
-		const length = this.state.comments.length;
+		const length = comments.length;
 		e.forEach((obj) => {
 			obj = obj.feed;
 			while (lastCheckedIndex < length &&
@@ -65,7 +72,7 @@ class Comment extends React.Component {
 				lastCheckedIndex += 1;
 			}
 		});
-		console.log("before set State");
+		console.log("before set State", comments);
 		this.setState({comments, lastEventId});
 		this.asyncCommentsXhr = asyncFetchComments(this.state.feedId,
 			lastEventId + 1, this.onCommentEvent, this.onCommentError);
