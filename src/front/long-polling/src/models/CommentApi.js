@@ -7,7 +7,7 @@ export function asyncFetchComments(feedId, eventId, success, error) {
 		function() {
 		console.log(this.responseText);
 		let payload;
-		if (this.responseText) {
+		if (this.responseText !== 'Request timeout occurred.') {
 			payload = JSON.parse(this.responseText);
 		} else {
 			payload = []

@@ -34,7 +34,7 @@ export function asyncFetchFeeds(eventId, success, error) {
 	const xhr = get(`${base}/feeds/async/${eventId}`, function() {
 		console.log(this.responseText);
 		let payload;
-		if (this.responseText) {
+		if (this.responseText !== 'Request timeout occurred.') {
 			payload = JSON.parse(this.responseText);
 		} else {
 			payload = []
