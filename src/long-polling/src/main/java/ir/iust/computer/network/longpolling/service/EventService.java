@@ -18,10 +18,10 @@ public class EventService {
     }
 
     public List<Event> getEvents(Long id) {
-        return eventRepository.findAllByIdGreaterThanEqual(id);
+        return eventRepository.findAllLatest(id);
     }
 
     public List<Event> getEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAllLatest(0L);
     }
 }

@@ -56,16 +56,11 @@ public class EventController {
                     e.printStackTrace();
                 }
             }
-            List<Long> deletedFeeds = events.parallelStream().filter(e -> e.getEventType().name().equals(EventType.DELETE.name())).map(Event::getDataId).collect(Collectors.toList());
             for (Event event : events) {
                 Result result = new Result();
-                result.setPostId(event.getPostId());
                 result.setEvent(event);
                 if (event.getEventType().name().equals(EventType.DELETE.name())) {
                     results.add(result);
-                    continue;
-                }
-                if (deletedFeeds.contains(event.getDataId())) {
                     continue;
                 }
                 if (event.getDataType().name().equals(DataType.POST.name())) {

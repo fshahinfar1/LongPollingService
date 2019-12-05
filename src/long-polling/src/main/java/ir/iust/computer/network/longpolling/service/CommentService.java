@@ -28,4 +28,5 @@ public class CommentService {
     public void delete(Long id) {
         commentRepository.delete(commentRepository.findById(id).orElseThrow(NullPointerException::new));
     }
+
 }
