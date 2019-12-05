@@ -7,23 +7,24 @@ import {
 	useHistory,
 } from "react-router-dom";
 
-import './index.css';
-import App from './App';
-import PostFeed from './PostFeed';
-import Feeds from './Feeds';
-import {Comment} from './App';
+import {App, PostFeed, Comment, Login, Admin, Feeds} from './screens';
+import {NavBar} from './components';
 import * as serviceWorker from './serviceWorker';
+import './styles/index.css';
 
 
 function Routing() {
 	return (
-		<Router>
-			<Switch>
-				<Route path="/new-feed"><PostFeed /></Route>
-				<Route path="/comment"><Comment /></Route>
-				<Route path="/"><App /></Route>
-			</Switch>
-		</Router>
+			<Router>
+				<NavBar showLogin={true}/>
+				<Switch>
+					<Route path="/new-feed"><PostFeed /></Route>
+					<Route path="/comment/:feedId"><Comment /></Route>
+					<Route path="/login"><Login /></Route>
+					<Route path="/admin"><Admin /></Route>
+					<Route path="/"><Feeds /></Route>
+				</Switch>
+			</Router>
 	);
 }
 
