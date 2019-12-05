@@ -10,5 +10,6 @@ import org.springframework.stereotype.Component;
 public class Result {
     private Event event;
     private Feed feed;
+    private Long postId;
 
 }

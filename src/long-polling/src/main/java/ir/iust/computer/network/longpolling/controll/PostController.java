@@ -1,6 +1,7 @@
 package ir.iust.computer.network.longpolling.controll;
 
 import ir.iust.computer.network.longpolling.model.DataType;
+import ir.iust.computer.network.longpolling.model.Event;
 import ir.iust.computer.network.longpolling.model.EventType;
 import ir.iust.computer.network.longpolling.model.Post;
 import ir.iust.computer.network.longpolling.service.EventService;
@@ -42,14 +43,18 @@ public class PostController extends BaseController {
     @PostMapping()
     public ResponseEntity<Post> addPost(@RequestBody Post post) {
         Post savedPost = postService.savePost(post);
-        eventService.saveEvent(createEvent(EventType.ADD, DataType.POST, savedPost.getId()));
+        Event event = createEvent(EventType.ADD, DataType.POST, savedPost.getId());
+        event.setPostId(savedPost.getId());
+        eventService.saveEvent(event);
         return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}/delete")
     public ResponseEntity<Long> deletePost(@PathVariable long id) {
-        eventService.saveEvent(createEvent(EventType.DELETE, DataType.POST, id));
+        Event event = createEvent(EventType.DELETE, DataType.POST, id);
+        event.setPostId(id);
         postService.deletePost(id);
+        eventService.saveEvent(event);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
