@@ -3,6 +3,7 @@ package ir.iust.computer.network.longpolling.controll;
 import ir.iust.computer.network.longpolling.model.*;
 import ir.iust.computer.network.longpolling.service.CommentService;
 import ir.iust.computer.network.longpolling.service.EventService;
+import ir.iust.computer.network.longpolling.service.LikeService;
 import ir.iust.computer.network.longpolling.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +22,15 @@ public class PostController extends BaseController {
     private final PostService postService;
     private final EventService eventService;
     private final CommentService commentService;
+    private final LikeService likeService;
     Logger logger = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
-    public PostController(PostService postService, EventService eventService, CommentService commentService) {
+    public PostController(PostService postService, EventService eventService, CommentService commentService, LikeService likeService) {
         this.postService = postService;
         this.eventService = eventService;
         this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     @GetMapping(path = "/{id}")
@@ -55,9 +58,15 @@ public class PostController extends BaseController {
         event.setPostId(id);
         eventService.saveEvent(event);
         List<Comment> comments = commentService.getComments(id);
+        List<PostLike> postLikes = likeService.getLikes(id);
         postService.deletePost(id);
         for (Comment comment : comments) {
             event = createEvent(EventType.DELETE, DataType.COMMENT, comment.getId());
+            event.setPostId(id);
+            eventService.saveEvent(event);
+        }
+        for (PostLike postLike : postLikes) {
+            event = createEvent(EventType.DELETE, DataType.LIKE, postLike.getId());
             event.setPostId(id);
             eventService.saveEvent(event);
         }

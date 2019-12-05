@@ -20,9 +20,7 @@ import java.util.List;
 @RequestMapping(produces = "application/json")
 public class CommentController extends BaseController {
     private final PostService postService;
-
     private final CommentService commentService;
-
     private final EventService eventService;
 
     @Autowired
