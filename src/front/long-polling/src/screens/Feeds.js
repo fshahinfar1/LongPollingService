@@ -17,7 +17,7 @@ class Feeds extends React.Component {
 
 	componentDidMount() {
 		// fetchFeeds(this.onFeedsSuccess, this.onFeedsError);
-		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId,
+		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
 	}
 
@@ -27,30 +27,35 @@ class Feeds extends React.Component {
 		}
 	}
 
-	onFeedsEventFetch = (e) => {
+	onFeedsEventFetch = (e, lastEventId) => {
 		console.log(e);
 		const feeds_info = JSON.parse(JSON.stringify(this.state.feeds_info));
 		let checkedIndex = 0;
 		const length = feeds_info.length;
-		let lastEventId = this.state.lastEventId;
-		e.forEach(function(obj) {
-			if (obj.id >= lastEventId)
-				lastEventId = obj.id + 1; // next event id
+		e.forEach(function(_obj) {
+			console.log(_obj);
+			let obj = _obj.feed;
 			while (checkedIndex < length &&
 							feeds_info[checkedIndex].id < obj.id) {
 				checkedIndex += 1;
 			}
 			if (checkedIndex < length &&
 					feeds_info[checkedIndex].id === obj.id) {
-				feeds_info[checkedIndex] = obj;
+				if (_obj.event.eventType === 'DELETE') {
+					feeds_info.splice(checkedIndex, 1);
+				} else {
+					feeds_info[checkedIndex] = obj;
+				}
 				return;
 			} else {
+				if (_obj.event.eventType === 'DELETE')
+					return;
 				feeds_info.splice(checkedIndex, 0, obj);
 				checkedIndex += 1;
 			}
 		});
 		this.setState({feeds_info, lastEventId});
-		this.asyncFeedsXhr = asyncFetchFeeds(lastEventId,
+		this.asyncFeedsXhr = asyncFetchFeeds(lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
 	}
 

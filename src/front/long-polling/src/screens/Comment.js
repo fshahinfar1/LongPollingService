@@ -15,7 +15,6 @@ function CommentBox(props) {
 class Comment extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props.match, props.location, props.history);
 		this.state = {
 			feedId: props.match.params.feedId,
 			comments: [],
@@ -46,15 +45,13 @@ class Comment extends React.Component {
 		console.log('error loading comment');
 	}
 
-	onCommentEvent = (e) => {
+	onCommentEvent = (e, lastEventId) => {
 		const comments = JSON.parse(JSON.stringify(this.state.comments));
 		console.log(comments);
 		let lastCheckedIndex = 0;
 		const length = this.state.comments.length;
-		let lastEventId = this.state.lastEventId;
 		e.forEach((obj) => {
-			if (lastEventId <= obj.id)
-				lastEventId = obj.id + 1;
+			obj = obj.feed;
 			while (lastCheckedIndex < length &&
 				comments[lastCheckedIndex].id < obj.id) {
 				lastCheckedIndex += 1;
@@ -71,7 +68,7 @@ class Comment extends React.Component {
 		console.log("before set State");
 		this.setState({comments, lastEventId});
 		this.asyncCommentsXhr = asyncFetchComments(this.state.feedId,
-			lastEventId, this.onCommentEvent, this.onCommentError);
+			lastEventId + 1, this.onCommentEvent, this.onCommentError);
 	}
 
 	onCommentError = (e) => {

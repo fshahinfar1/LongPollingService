@@ -32,18 +32,17 @@ export function deleteFeed(obj, success, error) {
 }
 
 export function asyncFetchFeeds(eventId, success, error) {
-	const xhr = asyncFetchEvents(eventId, function(e) {
+	const xhr = asyncFetchEvents(eventId, function(e, lastEventId) {
 		console.log(e);
 		let payload;
-		if (e !== 'Request timeout occurred.') {
-			payload = e;
-		} else {
-			payload = []
-		}
+		payload = e;
 		payload = filterEvent(payload, {dataType: 'POST'});
-		payload = payload.map(function(obj) {return(obj.feed)});
-		payload = payload.map(feedFromJson);
-		success(payload);
+		payload = payload.map(function(obj) {
+			if (obj.event.eventType !== 'DELETE')
+				obj.feed = feedFromJson(obj.feed);
+			return obj;
+		});
+		success(payload, lastEventId);
 	}, error)
 	return xhr;
 }

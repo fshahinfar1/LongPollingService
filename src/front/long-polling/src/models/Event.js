@@ -3,8 +3,15 @@ const base = 'http://localhost:8080/events';
 
 export function asyncFetchEvents(eventId, success, error) {
 	const xhr = get(`${base}/events/async/${eventId}`, function() {
-		const payload = JSON.parse(this.responseText);
-		success(payload);
+		let payload = this.responseText;
+		if (payload === 'Request timeout occurred.') {
+			payload = [];
+		} else {
+			payload = JSON.parse(payload);
+		}
+		const length = payload.length;
+		const lastEventId = length === 0 ? 0 : payload[length - 1].event.id;
+		success(payload, lastEventId);
 	}, function() {
 		error(this);
 	});
