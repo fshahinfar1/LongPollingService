@@ -1,4 +1,4 @@
-import {get, post, del} from '../utils/Http';
+import {get, post, del, put} from '../utils/Http';
 import {asyncFetchEvents, filterEvent} from '.';
 const base = 'http://localhost:8080/posts';
 
@@ -49,6 +49,10 @@ export function asyncFetchFeeds(eventId, success, error) {
 
 export function postFeed(feed, success, error) {
 	post(`${base}`, feed, success, error);
+}
+
+export function putFeed(id, feed, success, error) {
+	put(`${base}/${id}`, feed, success, error);
 }
 
 function feedFromJson(obj) {

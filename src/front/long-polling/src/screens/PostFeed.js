@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import {postFeed, fetchFeed} from '../models';
+import {postFeed, fetchFeed, putFeed} from '../models';
 import {Form, NavBar} from '../components';
 import '../styles/App.css';
 
@@ -39,6 +39,12 @@ class PostFeed extends React.Component {
 	}
 
 	putFeed = (obj) => {
+		const payload = Object.assign({
+			createDate: new Date().toISOString(),
+		}, obj);
+		putFeed(this.state.feedId, payload,
+			()=>console.log("updated post"), ()=>null);
+		this.props.history.push('/');
 	}
 
 	render() {
