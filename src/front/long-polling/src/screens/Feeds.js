@@ -32,18 +32,20 @@ class Feeds extends React.Component {
 		console.log(e);
 		const feeds_info = JSON.parse(JSON.stringify(this.state.feeds_info));
 		let checkedIndex = 0;
-		const length = feeds_info.length;
+		let length = feeds_info.length;
 		e.forEach(function(_obj) {
 			console.log(_obj);
 			let obj = _obj.feed;
 			while (checkedIndex < length &&
-							feeds_info[checkedIndex].id < obj.id) {
+							feeds_info[checkedIndex].id < _obj.postId) {
 				checkedIndex += 1;
 			}
 			if (checkedIndex < length &&
-					feeds_info[checkedIndex].id === obj.id) {
+					feeds_info[checkedIndex].id === _obj.postId) {
 				if (_obj.event.eventType === 'DELETE') {
 					feeds_info.splice(checkedIndex, 1);
+					checkedIndex -= 1;
+					length -= 1;
 				} else {
 					feeds_info[checkedIndex] = obj;
 				}
@@ -62,6 +64,9 @@ class Feeds extends React.Component {
 
 	onFeedsSuccess = (e) => {
 		console.log(e);
+		// update posts data it self
+		this.setState({feeds_info: e});
+		console.log('this is after setState');
 		// fetch likes for each post
 		for (let i = 0; i < e.length; i++) {
 			console.log(i, 'like');
@@ -74,8 +79,6 @@ class Feeds extends React.Component {
 		}
 		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
-		// update posts data it self
-		this.setState({feeds_info: e});
 	}
 
 	onFeedsError = (e) => {
