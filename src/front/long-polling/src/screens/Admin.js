@@ -12,6 +12,7 @@ function FeedOptions(props) {
 			<span>{props.date}</span>
 			<div className="feed-option-buttons" >
 				<FancyButton value="view" onClick={props.onViewClicked} />
+				<FancyButton value="edit" onClick={props.onEditClicked} />
 				<FancyButton value="delete" onClick={props.onDeleteClicked} />
 			</div>
 		</div>
@@ -64,6 +65,7 @@ class Admin extends React.Component {
 					date={obj.date}
 					title={obj.title}
 					onViewClicked={() => _this.props.history.push(`/comment/${obj.id}`)}
+					onEditClicked={() => _this.props.history.push(`/new-feed/${obj.id}`)}
 					onDeleteClicked={() => _this.onDeleteFeed(obj)}
 				/>
 			);

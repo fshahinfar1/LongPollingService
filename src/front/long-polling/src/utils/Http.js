@@ -30,3 +30,13 @@ export function del(url, success, error) {
 	xhr.send();
 	return xhr;
 }
+
+export function put(url, payload, success, error) {
+	const xhr = getXHR(url, 'PUT');
+	const body = JSON.stringify(payload);
+	console.log(body);
+	xhr.send(body);
+	xhr.addEventListener('load', success);
+	xhr.addEventListener('error', error);
+	return xhr;
+}

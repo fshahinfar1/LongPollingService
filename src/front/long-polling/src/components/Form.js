@@ -5,9 +5,15 @@ import '../styles/App.css';
 class Form extends React.Component {
 	constructor(props) {
 		super(props);
+		let title = '';
+		let description = '';
+		if (props.data) {
+			title = props.data.title;
+			description = props.data.description;
+		}
 		this.state = {
-			title: '',
-			description: '',
+			title,
+			description
 		}
 	}
 
