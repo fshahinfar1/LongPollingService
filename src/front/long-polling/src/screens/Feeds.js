@@ -31,20 +31,22 @@ class Feeds extends React.Component {
 	onFeedsEventFetch = (e, lastEventId) => {
 		console.log(e);
 		const feeds_info = JSON.parse(JSON.stringify(this.state.feeds_info));
-		let checkedIndex = 0;
 		let length = feeds_info.length;
 		e.forEach(function(_obj) {
-			console.log(_obj);
+			let checkedIndex = 0;
+			console.log('in for each in async feed', _obj);
 			let obj = _obj.feed;
 			while (checkedIndex < length &&
-							feeds_info[checkedIndex].id < _obj.postId) {
+							feeds_info[checkedIndex].id !==  _obj.event.postId) {
+				console.log(typeof(_obj.event.postId), typeof(feeds_info[checkedIndex].id));
 				checkedIndex += 1;
 			}
 			if (checkedIndex < length &&
-					feeds_info[checkedIndex].id === _obj.postId) {
+					feeds_info[checkedIndex].id === _obj.event.postId) {
+				console.log('found');
 				if (_obj.event.eventType === 'DELETE') {
+					console.log("doing delete");
 					feeds_info.splice(checkedIndex, 1);
-					checkedIndex -= 1;
 					length -= 1;
 				} else {
 					feeds_info[checkedIndex] = obj;
@@ -54,10 +56,11 @@ class Feeds extends React.Component {
 				if (_obj.event.eventType === 'DELETE')
 					return;
 				feeds_info.splice(checkedIndex, 0, obj);
-				checkedIndex += 1;
+				length += 1;
 			}
 		});
-		this.setState({feeds_info, lastEventId});
+		const levnum = lastEventId > this.state.lastEventId ? lastEventId: this.state.lastEventId;
+		this.setState({feeds_info, levnum});
 		this.asyncFeedsXhr = asyncFetchFeeds(lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
 	}
