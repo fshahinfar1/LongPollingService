@@ -100,13 +100,14 @@ class Comment extends React.Component {
 			return (<CommentBox text={obj.text} />);
 		});
 
+		console.log(JSON.stringify(this.state));
 		return (
 			<main>
 			{
 				this.state.feed ?
 				<Feed
 						title={this.state.feed.title}
-						description={this.state.description}
+						description={this.state.feed.description}
 						date={this.state.feed.date}
 				/>
 				: null
