@@ -1,4 +1,5 @@
 import {get, post} from '../utils/Http';
+import {asyncFetchEvents, filterEvent} from '../models';
 const base = 'http://localhost:8080';
 
 
@@ -16,6 +17,15 @@ export function fetchLikes(feedId, success, error) {
 }
 
 export function asyncFetchLikes(feedId, eventId, success, error) {
+	const xhr = asyncFetchEvents(eventId, function(e, lastEventId) {
+		console.log(e);
+		let payload = e;
+		payload = filterEvent(payload, {dataType: 'LIKE', postId: feedId});
+		const count = payload.length;
+		console.log('async like count', count);
+		success(count, lastEventId);
+	}, error);
+	return xhr;
 }
 
 export function postLike(feedId, success, error) {
