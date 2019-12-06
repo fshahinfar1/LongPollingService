@@ -12,7 +12,7 @@ body {
 	margin: 2%;
 	width: 90%;
 	height: 90%;
-	background: linear-gradient(180deg, white, lightgray, gray);
+/*	background: linear-gradient(180deg, white, lightgray, gray); */
 	border: 2px solid black;
 	border-radius: 10px;
 }
@@ -97,6 +97,21 @@ body {
 	opacity: 0.5;
 }
 
+.fancy-button-number-fancy {
+	display: inline;
+	color: white;
+	position: absolute;
+	font-weight: bold;
+	left: 50%;
+	top: 50%;
+ 	transform: translate(-50%, -50%);
+}
+
+.fancy-button-number-classic {
+	display: inline-block;
+	align-self: middle;
+}
+
 /*feed*/
 .feed-container {
 	border: 1px solid darkgray;
@@ -144,6 +159,17 @@ body {
 
 .comment-box p {
 	padding: 1em;
+}
+
+.new-comment-section {
+	display: block;
+	text-align: center;
+}
+
+.new-comment-section textarea {
+	display: block;
+	min-height: 200px;
+	width: 100%;
 }
 
 /*feeds*/

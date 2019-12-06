@@ -2,8 +2,10 @@ import {fetchFeed, fetchFeeds, deleteFeed,
 	asyncFetchFeeds, postFeed} from './FeedsApi';
 import {asyncFetchComments, postComment, fetchComments} from './CommentApi';
 import {asyncFetchEvents, filterEvent} from './Event';
+import {fetchLikes, postLike} from './LikeApi.js';
 
 
 export {fetchFeed, fetchFeeds, deleteFeed, asyncFetchFeeds, postFeed,
 	asyncFetchComments, postComment, fetchComments,
-	asyncFetchEvents, filterEvent};
+	asyncFetchEvents, filterEvent,
+	fetchLikes, postLike};

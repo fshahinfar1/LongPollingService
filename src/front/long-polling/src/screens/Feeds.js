@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {FancyButton, Feed} from '../components';
-import {fetchFeeds, asyncFetchFeeds} from '../models';
+import {fetchFeeds, asyncFetchFeeds, postLike, fetchLikes} from '../models';
 import '../styles/App.css';
 
 
@@ -10,7 +10,8 @@ class Feeds extends React.Component {
 		super(props);
 		this.state = {
 			feeds_info: [],
-			lastEventId: 0
+			lastEventId: 0,
+			likes: {}
 		}
 		this.asyncFeedsXhr = null
 	}
@@ -60,10 +61,21 @@ class Feeds extends React.Component {
 	}
 
 	onFeedsSuccess = (e) => {
-		this.setState({feeds_info: e});
-
+		console.log(e);
+		// fetch likes for each post
+		for (let i = 0; i < e.length; i++) {
+			console.log(i, 'like');
+			fetchLikes(e[i].id,  (likeCount) => {
+				console.log(likeCount);
+				const likes = JSON.parse(JSON.stringify(this.state.likes));
+				likes[e[i].id] = likeCount;
+				this.setState({likes});
+			}, ()=>null);
+		}
 		this.asyncFeedsXhr = asyncFetchFeeds(this.state.lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
+		// update posts data it self
+		this.setState({feeds_info: e});
 	}
 
 	onFeedsError = (e) => {
@@ -71,13 +83,21 @@ class Feeds extends React.Component {
 	}
 
 	render() {
-		const feeds = this.state.feeds_info.map(function (obj) {
+		console.log(JSON.stringify(this.state));
+		const feeds = this.state.feeds_info.map((obj) => {
+			let likes = this.state.likes[obj.id];
+			console.log(likes);
+			if (likes === undefined)
+				likes = 0;
 			return <Feed
 							key={obj.id}
 							title={obj.title}
 							description={obj.description}
 							date={obj.date}
 							id={obj.id}
+							onLikeClick={function() {postLike(obj.id,
+								function(){}, function(){})}}
+							likeCount={likes}
 						/>
 		});
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from 'react-router-dom';
 import {FancyButton} from '../components';
 import {fetchFeeds, deleteFeed} from '../models';
 import '../styles/App.css';
@@ -17,7 +18,7 @@ function FeedOptions(props) {
 	);
 }
 
-export default class Admin extends React.Component {
+class Admin extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -62,7 +63,7 @@ export default class Admin extends React.Component {
 					key={obj.id}
 					date={obj.date}
 					title={obj.title}
-					onViewClicked={()=>null}
+					onViewClicked={() => _this.props.history.push(`/comment/${obj.id}`)}
 					onDeleteClicked={() => _this.onDeleteFeed(obj)}
 				/>
 			);
@@ -77,3 +78,5 @@ export default class Admin extends React.Component {
 		);
 	}
 }
+
+export default Admin = withRouter(Admin);

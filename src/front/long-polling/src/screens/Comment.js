@@ -115,14 +115,10 @@ class Comment extends React.Component {
 					<div>
 						{comments}
 					</div>
-					<div>
+					<div className="new-comment-section">
 						<textarea
 							value={this.state.currentComment}
 							onChange={(e) => this.setState({currentComment: e.target.value})}
-						/>
-						<FancyButton
-							value="Back"
-							onClick={this.onBackClicked}
 						/>
 						<FancyButton
 							value="Post"

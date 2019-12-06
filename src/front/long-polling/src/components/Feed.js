@@ -19,7 +19,9 @@ export default function Feed(props) {
 				<div className='feed-footer'>
 					<FancyButton
 						value='like'
+						count={props.likeCount}
 						img={{alt:'heart', src:heart_icon}}
+						onClick={props.onLikeClick}
 					/>
 					<FancyButton
 						value='comment'
