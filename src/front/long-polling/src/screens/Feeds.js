@@ -39,18 +39,14 @@ class Feeds extends React.Component {
 	applyFeedEvent = (_obj, feeds_info) => {
 		let length = feeds_info.length;
 		let checkedIndex = 0;
-		console.log('in for each in async feed', _obj);
 		let obj = _obj.feed;
 		while (checkedIndex < length &&
 						feeds_info[checkedIndex].id !==  _obj.event.postId) {
-			console.log(typeof(_obj.event.postId), typeof(feeds_info[checkedIndex].id));
 			checkedIndex += 1;
 		}
 		if (checkedIndex < length &&
 				feeds_info[checkedIndex].id === _obj.event.postId) {
-			console.log('found');
 			if (_obj.event.eventType === 'DELETE') {
-				console.log("doing delete");
 				feeds_info.splice(checkedIndex, 1);
 				length -= 1;
 			} else {
@@ -69,22 +65,25 @@ class Feeds extends React.Component {
 		console.log(e);
 		const feeds_info = dclone(this.state.feeds_info);
 		e.forEach((obj) => this.applyFeedEvent(obj, feeds_info));
-		const levnum = lastEventId > this.state.lastEventId ? lastEventId: this.state.lastEventId;
+		const levnum = lastEventId > this.state.lastEventId ?
+			lastEventId: this.state.lastEventId;
 		this.setState({feeds_info, levnum});
 		this.asyncFeedsXhr = asyncFetchFeeds(lastEventId + 1,
 			this.onFeedsEventFetch, this.onFeedsError);
 	}
 
 	onFeedsSuccess = (e) => {
+		console.log('feed successful');
 		// update posts data it self
 		this.setState({feeds_info: e});
 		// fetch likes for each post
 		for (let i = 0; i < e.length; i++) {
 			const id = e[i].id;
-			fetchLikes(id,
-				(count) => {this.onFetchLike(e[i], count)},
-				()=>null
-			);
+			console.log('iterating for likes', id);
+			// fetchLikes(id,
+			// 	(count) => {this.onFetchLike(e[i], count)},
+			// 	()=>null
+			// );
 			this.asyncLikeXhr[id] = asyncFetchLikes(id,
 				this.state.lastLikeEventId + 1,
 				(cnt, lstEId) => this.onAsyncFetchLike(cnt, lstEId, id),
@@ -107,19 +106,22 @@ class Feeds extends React.Component {
 	}
 
 	onAsyncFetchLike = (count, lstEId, id) => {
+		console.log(count, lstEId, id, 'onAsyncFetchLike');
 		const likes = dclone(this.state.likes);
 		let precnt = likes[id];
 		if (precnt === undefined) {
 			precnt = 0;
 		}
-		likes[id] = precnt + count;
-		this.asyncLikeXhr[id] = asyncFetchLikes(id,
-			this.state.lastLikeEventId + 1,
+
+		let lastLikeEventId = lstEId > this.state.lastLikeEventId ?
+			lstEId : this.state.lastLikeEventId;
+
+		this.asyncLikeXhr[id] = asyncFetchLikes(id, lastLikeEventId + 1,
 			(cnt, lst) => this.onAsyncFetchLike(cnt, lst, id),
 			dummyFunc
 		);
-		let lastLikeEventId = lstEId > this.state.lastLikeEventId ?
-			lstEId : this.state.lastLikeEventId;
+
+		likes[id] = precnt + count;
 		this.setState({likes, lastLikeEventId,});
 	}
 

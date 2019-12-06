@@ -20,7 +20,6 @@ export function asyncFetchEvents(eventId, success, error) {
 
 export function filterEvent(arr, {dataType, eventType, postId}) {
 		let res = arr.filter(function(obj) {
-			console.log(eventType, postId, dataType);
 			let okay = true;
 			if (dataType !== undefined) {
 				okay = okay && obj.event.dataType === dataType;
@@ -31,9 +30,6 @@ export function filterEvent(arr, {dataType, eventType, postId}) {
 			}
 
 			if (postId !== undefined) {
-				console.log('postId:', postId, obj.event.postId)
-				console.log(obj.event.postId === postId);
-				console.log(typeof (postId), typeof(obj.event.postId));
 				okay = okay && obj.event.postId === postId;
 			}
 
